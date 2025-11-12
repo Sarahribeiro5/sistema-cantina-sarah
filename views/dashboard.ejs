@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <header>
+        <h2>Bem-vindo(a), <%= usuario.name %>!</h2>
+        <nav>
+            <a href="/cadastro-produto">📦 Cadastro de Produto</a> |
+            <a href="/gestao-estoque">📊 Gestão de Estoque</a> |
+            <a href="/logout">🚪 Sair</a>
+        </nav>
+    </header>
+
+    <main>
+        <h3>📊 Estatísticas</h3>
+        <p>Total de produtos: <%= totalProdutos %>
+        </p>
+        <p>Total de movimentações: <%= totalMov %>
+        </p>
+
+        <h3>🔔 Produtos com estoque baixo</h3>
+        <% if (produtosBaixos.length===0) { %>
+            <p>Nenhum produto crítico 👌</p>
+            <% } else { %>
+                <ul>
+                    <% produtosBaixos.forEach(p=> { %>
+                        <li>
+                            <%= p.name %> — Estoque: <%= p.qty %> (mínimo: <%= p.min_stock %>)
+                        </li>
+                        <% }) %>
+                </ul>
+                <% } %>
+    </main>
+</body>
+
+</html>

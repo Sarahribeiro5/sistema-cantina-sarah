@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Produtos</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <header>
+        <h2>📦 Cadastro de Produtos</h2>
+        <nav>
+            <a href="/dashboard">🏠 Dashboard</a> |
+            <a href="/gestao-estoque">📊 Gestão de Estoque</a> |
+            <a href="/logout">🚪 Sair</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="busca">
+            <form method="GET" action="/cadastro-produto">
+                <input type="text" name="busca" value="<%= busca %>" placeholder="🔍 Buscar produto...">
+                <button type="submit">Buscar</button>
+            </form>
+        </section>
+
+        <section class="novo-produto">
+            <h3>➕ Cadastrar novo produto</h3>
+            <form action="/cadastro-produto" method="POST" class="form-produto">
+                <input type="text" name="sku" placeholder="SKU (opcional)">
+                <input type="text" name="name" placeholder="Nome do produto" required>
+                <input type="text" name="brand" placeholder="Marca">
+                <input type="text" name="model" placeholder="Modelo">
+                <input type="text" name="unit" placeholder="Unidade (ex: unidade, caixa)">
+                <input type="number" name="qty" placeholder="Quantidade inicial" min="0" value="0">
+                <input type="number" name="min_stock" placeholder="Estoque mínimo" min="0" value="0">
+                <button type="submit">Salvar</button>
+            </form>
+        </section>
+
+        <section>
+            <h3>📋 Produtos cadastrados</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Nome</th>
+                        <th>Qtd</th>
+                        <th>Mín</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% produtos.forEach(p=> { %>
+                        <tr class="<%= p.qty <= p.min_stock ? 'baixo' : 'ok' %>">
+                            <form action="/cadastro-produto/update/<%= p.id %>" method="POST">
+                                <td>
+                                    <%= p.sku %>
+                                </td>
+                                <td><input type="text" name="name" value="<%= p.name %>"></td>
+                                <td><input type="number" name="qty" value="<%= p.qty %>"></td>
+                                <td><input type="number" name="min_stock" value="<%= p.min_stock %>"></td>
+                                <td>
+                                    <button type="submit">💾 Atualizar</button>
+                            </form>
+                            <form action="/cadastro-produto/delete/<%= p.id %>" method="POST" style="display:inline">
+                                <button type="submit" onclick="return confirm('Excluir o produto <%= p.name %>?')">🗑️
+                                    Excluir</button>
+                            </form>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+
+</html>
