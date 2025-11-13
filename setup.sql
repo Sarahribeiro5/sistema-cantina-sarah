@@ -7,22 +7,21 @@ CREATE DATABASE cantina_db;
 -- 🧑 Usuários
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
-  username TEXT NOT NULL UNIQUE,
-  password_hash TEXT NOT NULL,
-  role TEXT NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
   created_at TIMESTAMP DEFAULT now()
 );
 
 -- 🍞 Produtos
 CREATE TABLE IF NOT EXISTS products (
   id SERIAL PRIMARY KEY,
-  sku TEXT UNIQUE,
-  name TEXT NOT NULL,
-  brand TEXT,
-  model TEXT,
+  sku VARCHAR(50) UNIQUE,
+  name VARCHAR(100) NOT NULL,
+  brand VARCHAR(100),
+  model VARCHAR(100),
   description TEXT,
-  unit TEXT,
+  unit VARCHAR(20),
   qty INTEGER DEFAULT 0,
   min_stock INTEGER DEFAULT 0,
   created_at TIMESTAMP DEFAULT now()
@@ -31,10 +30,10 @@ CREATE TABLE IF NOT EXISTS products (
 -- 📋 Movimentações de estoque
 CREATE TABLE IF NOT EXISTS stock_movements (
   id SERIAL PRIMARY KEY,
-  product_id INTEGER NOT NULL REFERENCES products(id),
+  product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
   user_id INTEGER NOT NULL REFERENCES users(id),
-  type TEXT NOT NULL CHECK (type IN ('entrada','saida')),
-  quantity INTEGER NOT NULL CHECK (quantity > 0),
+  type VARCHAR(10) NOT NULL CHECK (type IN ('entrada','saida')),
+  quantity INTEGER NOT NULL,
   movement_date DATE NOT NULL,
   balance_after INTEGER NOT NULL,
   note TEXT,
@@ -42,10 +41,10 @@ CREATE TABLE IF NOT EXISTS stock_movements (
 );
 
 -- 👩‍💼 Inserir usuários
-INSERT INTO users (name, username, password_hash, role) VALUES
-('Admin Teste', 'admin', 'admin123', 'admin'),
-('João da Silva', 'joao.s', 'joao123', 'almoxarife'),
-('Maria Souza', 'maria.s', 'maria123', 'almoxarife');
+INSERT INTO users (name, username, password_hash) VALUES
+('Admin Teste', 'admin', 'admin123'),
+('João da Silva', 'joao.s', 'joao123'),
+('Maria Souza', 'maria.s', 'maria123');
 
 -- 🧰 Inserir produtos
 INSERT INTO products (sku, name, brand, model, description, unit, qty, min_stock)

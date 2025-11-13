@@ -16,8 +16,8 @@ const pool = new Pool({
   user: "postgres",       // Usuário do seu banco
   host: "localhost",      // Servidor local
   database: "cantina_db", // Banco criado
-  password: "12345",      // Senha do postgres
-  port: 5432,
+  password: "amods",      // Senha do postgres
+  port: 7777,
 });
 
 // ⚙️ Configurações globais
